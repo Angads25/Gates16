@@ -1,0 +1,30 @@
+<resources>
+    <string name="app_name">Gates 2k16</string>
+    <string-array name="list1">
+        <item>Event 1</item>
+        <item>Event 2</item>
+        <item>Event 3</item>
+        <item>Event 4</item>
+        <item>Event 5</item>
+        <item>Event 6</item>
+    </string-array>
+    <string name="openDrawer">Drawer Open</string>
+    <string name="closeDrawer">Drawer Close</string>
+    <string name="gtbit">
+        <![CDATA[
+                <h1>
+                    Gates
+                </h1>
+                <p>
+                <b>GATES</b> is the annual techno-cultural fest of <b>GTBIT</b>. Its an opportunity for the GTBIT
+                community to showcase the rich culture of <i>GTBITians</i> a venture to initiate, build and
+                maintain acquaintances in the academic and industrial arena.
+                </p>
+                <p>
+                Each year 1000s of students from various colleges of north India gather at <b>GTBIT</b> and
+                challenge their wits to compete in various Technical, Managerial and Literary Events.
+                The Cultural events at <b>GATES</b> provides a platform for the students to showcase their talents.
+                </p>
+            ]]>
+    </string>
+</resources>

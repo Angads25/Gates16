@@ -1,0 +1,8 @@
+<?xml version="1.0" encoding="utf-8"?>
+<resources>
+    <color name="colorPrimary">#3f2566</color>
+    <color name="colorPrimaryDark">#2b1847</color>
+    <color name="colorAccent">#FFFFFF</color>
+    <color name="drawer_bg_pressed">#2196F3</color>
+    <color name="drawer_bg">#FFFFFF</color>
+</resources>
