@@ -56,13 +56,13 @@ public class ListAdapter extends BaseAdapter
         TextView event = (TextView) row.findViewById(R.id.events);
         TextView time = (TextView) row.findViewById(R.id.time);
         TextView desc = (TextView) row.findViewById(R.id.description);
-        ImageView img = (ImageView) row.findViewById(R.id.image_event);
+        //ImageView img = (ImageView) row.findViewById(R.id.image_event);
         event.setText(eventItems.get(position).getTitle());
         Calendar cal=Calendar.getInstance(TimeZone.getTimeZone("IST"));
         cal.setTimeInMillis(eventItems.get(position).getTime());
         Date date=cal.getTime();
-        Picasso.with(mcontext).load(eventItems.get(position).getImageUrl()).into(img);
-        SimpleDateFormat ft=new SimpleDateFormat ("E dd/MM/yyyy 'at' hh:mm a", Locale.getDefault());
+        //Picasso.with(mcontext).load(eventItems.get(position).getImageUrl()).into(img);
+        SimpleDateFormat ft=new SimpleDateFormat ("E dd/MM 'at' hh:mm a", Locale.getDefault());
         time.setText(ft.format(date));
         desc.setText(eventItems.get(position).getDesc());
         return row;

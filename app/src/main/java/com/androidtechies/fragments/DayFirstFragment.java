@@ -1,21 +1,21 @@
 package com.androidtechies.fragments;
 
 import android.app.Activity;
-import android.app.Dialog;
-import android.app.ProgressDialog;
 import android.content.Context;
 import android.content.Intent;
 import android.os.Bundle;
 import android.support.annotation.Nullable;
+import android.support.design.widget.Snackbar;
 import android.support.v4.app.Fragment;
 import android.support.v4.widget.SwipeRefreshLayout;
-import android.util.Log;
+//import android.util.Log;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
 import android.widget.AdapterView;
+import android.widget.LinearLayout;
 import android.widget.ListView;
-import android.widget.Toast;
+import android.widget.ProgressBar;
 
 import com.android.volley.Request;
 import com.android.volley.Response;
@@ -24,9 +24,7 @@ import com.android.volley.toolbox.StringRequest;
 import com.androidtechies.gates16.EventActivity;
 import com.androidtechies.gates16.R;
 import com.androidtechies.model.EventItem;
-import com.androidtechies.model.ImageItem;
 import com.androidtechies.model.ListAdapter;
-import com.androidtechies.model.SocietesAdapter;
 import com.androidtechies.utils.VolleySingleton;
 
 import org.json.JSONArray;
@@ -46,7 +44,8 @@ public class DayFirstFragment extends Fragment implements SwipeRefreshLayout.OnR
     private SwipeRefreshLayout mSwipeRefreshLayout;
     private static String TAG = "DayFirstFragment";
     private ListView listView;
-    private ProgressDialog dialog;
+    private LinearLayout lin;
+    private ProgressBar progressBar;
     String image;
 
     @Nullable
@@ -55,15 +54,15 @@ public class DayFirstFragment extends Fragment implements SwipeRefreshLayout.OnR
         View view =  inflater.inflate(R.layout.fragment_day, container, false);
         mSwipeRefreshLayout = (SwipeRefreshLayout) view.findViewById(R.id.swipe_refresh_day);
         listView = (ListView) view.findViewById(R.id.list);
+        lin=(LinearLayout)view.findViewById(R.id.ll);
+        progressBar=(ProgressBar)view.findViewById(R.id.progressBar);
         mSwipeRefreshLayout.setOnRefreshListener(this);
         eventDayOneArray = new ArrayList<>();
-        dialog=new ProgressDialog(context);
-        dialog.setMessage("Loading...");
-        dialog.show();
+        progressBar.setVisibility(View.VISIBLE);
         StringRequest request = new StringRequest(Request.Method.GET, eventDayOneUrl, new Response.Listener<String>() {
             @Override
             public void onResponse(String response) {
-                Log.e(TAG, response);
+                //Log.e(TAG, response);
                 try {
                     JSONArray array = new JSONArray(response);
                     for (int i = 0 ; i < array.length(); i++){
@@ -77,18 +76,29 @@ public class DayFirstFragment extends Fragment implements SwipeRefreshLayout.OnR
                     }
                     listView.setAdapter(new ListAdapter(context, eventDayOneArray));
                 } catch (JSONException e) {
-                    Log.v(TAG, ""+ e);
+                    //Log.v(TAG, "" + e);
+                    Snackbar snackbar = Snackbar.make(lin, "Failed To Fetch Data", Snackbar.LENGTH_LONG);
+                    snackbar.show();
+
+                }
+                finally
+                {   progressBar.setVisibility(View.GONE);
                 }
             }
         }, new Response.ErrorListener() {
             @Override
             public void onErrorResponse(VolleyError error) {
-                Toast.makeText(context, "E"+ error, Toast.LENGTH_LONG).show();
+                //Toast.makeText(context, "E"+ error, Toast.LENGTH_LONG).show();
+                try {
+                    Snackbar snackbar = Snackbar.make(lin, "Failed To Fetch Data", Snackbar.LENGTH_LONG);
+                    snackbar.show();
+                }
+                catch(Exception e)
+                {   e.printStackTrace();
+                }
+                progressBar.setVisibility(View.GONE);
             }
         });
-        if(dialog.isShowing())
-        {   dialog.dismiss();
-        }
         VolleySingleton.getInstance(context.getApplicationContext()).getRequestQueue().add(request);
         listView.setOnItemClickListener(new AdapterView.OnItemClickListener() {
             @Override
@@ -109,18 +119,10 @@ public class DayFirstFragment extends Fragment implements SwipeRefreshLayout.OnR
             @Override
             public void run() {
                 eventDayOneArray = new ArrayList<>();
-                ((Activity)context).runOnUiThread(new Runnable() {
-                    @Override
-                    public void run() {
-                        dialog = new ProgressDialog(context);
-                        dialog.setMessage("Loading...");
-                        dialog.show();
-                    }
-                });
                 StringRequest request = new StringRequest(Request.Method.GET, eventDayOneUrl, new Response.Listener<String>() {
                     @Override
                     public void onResponse(String response) {
-                        Log.e(TAG, response);
+                        //Log.e(TAG, response);
                         try {
                             JSONArray array = new JSONArray(response);
                             for (int i = 0 ; i < array.length(); i++){
@@ -139,25 +141,39 @@ public class DayFirstFragment extends Fragment implements SwipeRefreshLayout.OnR
                                 }
                             });
                         } catch (JSONException e) {
-                            Log.v(TAG, ""+ e);
+                            //Log.e(TAG, "" + e);
+                            Snackbar snackbar = Snackbar.make(lin, "Failed To Fetch Data", Snackbar.LENGTH_LONG);
+                            snackbar.show();
+                        }
+                        finally {
+                            ((Activity)context).runOnUiThread(new Runnable() {
+                                @Override
+                                public void run() {
+                                    mSwipeRefreshLayout.setRefreshing(false);
+                                }
+                            });
                         }
                     }
                 }, new Response.ErrorListener() {
                     @Override
                     public void onErrorResponse(VolleyError error) {
-                        Toast.makeText(getActivity(), "E"+ error, Toast.LENGTH_LONG).show();
+                        //Toast.makeText(getActivity(), "E"+ error, Toast.LENGTH_LONG).show();
+                        ((Activity)context).runOnUiThread(new Runnable() {
+                            @Override
+                            public void run() {
+                                mSwipeRefreshLayout.setRefreshing(false);
+                                try {
+                                    Snackbar snackbar = Snackbar.make(lin, "Failed To Fetch Data", Snackbar.LENGTH_LONG);
+                                    snackbar.show();
+                                }
+                                catch(Exception e)
+                                {   e.printStackTrace();
+                                }
+                            }
+                        });
                     }
                 });
                 VolleySingleton.getInstance(getActivity().getApplicationContext()).getRequestQueue().add(request);
-                ((Activity)context).runOnUiThread(new Runnable() {
-                    @Override
-                    public void run() {
-                        mSwipeRefreshLayout.setRefreshing(false);
-                        if(dialog.isShowing())
-                        {   dialog.dismiss();
-                        }
-                    }
-                });
             }
         });
         T1.start();

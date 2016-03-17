@@ -7,78 +7,66 @@
 
     <android.support.v7.widget.CardView
         android:layout_width="match_parent"
-        android:layout_height="180dp"
-        app:cardElevation="4dp"
-        android:layout_margin="4dp" >
+        android:layout_height="?attr/listPreferredItemHeightLarge"
+        app:cardElevation="2dp"
+        android:layout_margin="2dp" >
+        <!-- 180dp-->
 
-        <ImageView
-            android:layout_width="match_parent"
-            android:layout_height="match_parent"
-            android:src="@drawable/bg1"
-            android:id="@+id/image_event"
-            android:scaleType="centerCrop"
-            android:background="@null"
-            android:layout_centerVertical="true" />
+        <!--<ImageView-->
+            <!--android:layout_width="match_parent"-->
+            <!--android:layout_height="match_parent"-->
+            <!--android:src="@drawable/bg1"-->
+            <!--android:id="@+id/image_event"-->
+            <!--android:scaleType="centerCrop"-->
+            <!--android:background="@null"-->
+            <!--android:layout_centerVertical="true" />-->
 
         <View
             android:layout_width="match_parent"
             android:layout_height="match_parent"
-            android:background="#44000000"/>
+            android:background="#00000000"/>
 
-        <RelativeLayout
+        <LinearLayout
             android:layout_width="match_parent"
-            android:layout_height="match_parent">
+            android:layout_height="match_parent"
+            android:layout_marginLeft="@dimen/activity_horizontal_margin"
+            android:layout_marginStart="@dimen/activity_horizontal_margin"
+            android:layout_marginRight="@dimen/activity_horizontal_margin"
+            android:layout_marginEnd="@dimen/activity_horizontal_margin"
+            android:layout_marginTop="2dp"
+            android:layout_marginBottom="4dp"
+            android:orientation="vertical">
 
             <TextView
-                android:layout_width="wrap_content"
+                android:layout_width="match_parent"
                 android:layout_height="wrap_content"
                 android:id="@+id/events"
-                android:textSize="25sp"
+                android:textSize="18sp"
                 android:text="Event"
+                android:textStyle="bold"
                 android:singleLine="true"
-                android:textColor="@color/colorAccent"
-                android:layout_alignParentBottom="true"
-                android:layout_alignParentLeft="true"
-                android:layout_alignParentStart="true"
-                android:layout_marginLeft="@dimen/activity_vertical_margin"
-                android:layout_marginStart="@dimen/activity_vertical_margin"
-                android:layout_marginRight="@dimen/activity_vertical_margin"
-                android:layout_marginEnd="@dimen/activity_vertical_margin"
-                android:layout_marginBottom="35dp" />
+                android:textColor="@color/colorPrimaryDark" />
 
             <TextView
-                android:layout_width="wrap_content"
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:id="@+id/description"
+                android:textSize="14sp"
+                android:text="desc"
+                android:textColor="@color/colorPrimary"
+                android:layout_above="@+id/events"
+                android:singleLine="true"
+                android:layout_marginTop="4dp"
+                android:layout_marginBottom="4dp"/>
+
+            <TextView
+                android:layout_width="match_parent"
                 android:layout_height="wrap_content"
                 android:id="@+id/time"
                 android:textSize="13sp"
                 android:text="Time"
                 android:singleLine="true"
-                android:textColor="@color/colorAccent"
-                android:layout_marginLeft="@dimen/activity_vertical_margin"
-                android:layout_marginStart="@dimen/activity_vertical_margin"
-                android:layout_marginRight="@dimen/activity_vertical_margin"
-                android:layout_marginEnd="@dimen/activity_vertical_margin"
-                android:layout_marginTop="8dp"
-                android:layout_alignParentTop="true"
-                android:layout_alignParentRight="true"
-                android:layout_alignParentEnd="true" />
-
-                <TextView
-                    android:layout_width="wrap_content"
-                    android:layout_height="wrap_content"
-                    android:id="@+id/description"
-                    android:textSize="16sp"
-                    android:text="desc"
-                    android:textColor="@color/colorAccent"
-                    android:layout_above="@+id/events"
-                    android:singleLine="true"
-                    android:layout_alignParentBottom="true"
-                    android:layout_marginTop="10dp"
-                    android:layout_marginBottom="10dp"
-                    android:layout_alignLeft="@+id/events"
-                    android:layout_alignStart="@+id/events"
-                    android:layout_alignRight="@+id/time"
-                    android:layout_alignEnd="@+id/time" />
-        </RelativeLayout>
-</android.support.v7.widget.CardView>
+                android:textColor="@color/colorPrimary"/>
+        </LinearLayout>
+    </android.support.v7.widget.CardView>
 </LinearLayout>

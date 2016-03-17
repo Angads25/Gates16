@@ -1,13 +1,5 @@
 <resources>
-    <string name="app_name">Gates 2k16</string>
-    <string-array name="list1">
-        <item>Event 1</item>
-        <item>Event 2</item>
-        <item>Event 3</item>
-        <item>Event 4</item>
-        <item>Event 5</item>
-        <item>Event 6</item>
-    </string-array>
+    <string name="app_name">Gates 2K16</string>
     <string name="openDrawer">Drawer Open</string>
     <string name="closeDrawer">Drawer Close</string>
     <string name="gtbit">
@@ -17,7 +9,7 @@
                 </h1>
                 <p>
                 <b>GATES</b> is the annual techno-cultural fest of <b>GTBIT</b>. Its an opportunity for the GTBIT
-                community to showcase the rich culture of <i>GTBITians</i> a venture to initiate, build and
+                community to showcase the rich culture of <b>GTBIT</b><i>ians</i> a venture to initiate, build and
                 maintain acquaintances in the academic and industrial arena.
                 </p>
                 <p>

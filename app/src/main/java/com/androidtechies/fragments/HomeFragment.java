@@ -5,9 +5,8 @@ import android.content.Context;
 import android.graphics.Color;
 import android.os.Build;
 import android.os.Bundle;
-import android.support.annotation.Nullable;
-import android.support.design.widget.AppBarLayout;
 import android.support.design.widget.CollapsingToolbarLayout;
+import android.support.design.widget.Snackbar;
 import android.support.v4.app.Fragment;
 import android.support.v4.app.FragmentStatePagerAdapter;
 import android.support.v4.view.ViewPager;
@@ -15,15 +14,13 @@ import android.support.v7.widget.LinearLayoutManager;
 import android.support.v7.widget.RecyclerView;
 import android.text.Html;
 import android.text.Spanned;
-import android.util.Log;
+//import android.util.Log;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
-import android.widget.GridView;
 import android.widget.ImageView;
+import android.widget.LinearLayout;
 import android.widget.TextView;
-import android.widget.Toast;
-import android.widget.Toolbar;
 
 import com.android.volley.Request;
 import com.android.volley.Response;
@@ -45,54 +42,19 @@ import java.util.ArrayList;
  * A simple {@link Fragment} subclass.
  */
 public class HomeFragment extends Fragment{
-    private Toolbar toolbar;
     private Context context;
     private ArrayList<ImageItem> societyArray = null;
     private String baseImageUrl = "http://gatesapi.herokuapp.com/img/icons/";
     private ImageView indicator1, indicator2, indicator3;
-    private static String TAG = "HomeFragment";
     private RecyclerView myList;
-    private String societyUrl = "http://gatesapi.herokuapp.com/SocietesCard?q=societies";
+    private LinearLayout linl;
     int i;
 
-    @Override
-    public void onCreate(@Nullable Bundle savedInstanceState) {
-        super.onCreate(savedInstanceState);
-        societyArray = new ArrayList<>();
-
-        StringRequest request = new StringRequest(Request.Method.GET, societyUrl,
-                new Response.Listener<String>() {
-                    @Override
-                    public void onResponse(String response) {
-                        try {
-                            JSONArray array = new JSONArray(response);
-                            for (int i = 0 ; i < array.length(); i++){
-                                JSONObject object = array.optJSONObject(i);
-                                String tempTitle = object.getString("sname");
-                                String tempUrl = baseImageUrl + object.getString("imgurl");
-
-                                Log.e(TAG, "" + tempTitle + " " +tempUrl);
-                                societyArray.add(new ImageItem(tempUrl, tempTitle));
-                            }
-                            myList.setAdapter(new SocietesAdapter(context, societyArray));
-
-                        } catch (JSONException e) {
-                            Log.v(TAG, ""+ e);
-                        }
-                    }
-                }, new Response.ErrorListener() {
-            @Override
-            public void onErrorResponse(VolleyError error) {
-                Toast.makeText(context, "E"+ error, Toast.LENGTH_LONG).show();
-            }
-        });
-
-        VolleySingleton.getInstance(getActivity().getApplicationContext()).getRequestQueue().add(request);
-    }
-
+    @SuppressWarnings("deprecation")
     @Override
     public View onCreateView(LayoutInflater inflater, ViewGroup container, Bundle savedInstanceState) {
         View view= inflater.inflate(R.layout.fragment_home, container, false);
+        linl=(LinearLayout)view.findViewById(R.id.linl);
         indicator1 = (ImageView) view.findViewById(R.id.indicator1);
         indicator2 = (ImageView) view.findViewById(R.id.indicator2);
         indicator3 = (ImageView) view.findViewById(R.id.indicator3);
@@ -100,8 +62,8 @@ public class HomeFragment extends Fragment{
         if (Build.VERSION.SDK_INT >= Build.VERSION_CODES.M) {
             collapsingToolbar.setBackgroundColor(getResources().getColor(R.color.colorPrimary, getActivity().getTheme()));
         }
-        else {
-            collapsingToolbar.setBackgroundColor(getResources().getColor(android.R.color.transparent));
+        else
+        {   collapsingToolbar.setBackgroundColor(getResources().getColor(android.R.color.transparent));
         }
         collapsingToolbar.setCollapsedTitleTextColor(Color.parseColor("#FFFFFF"));
         ViewPager pager=(ViewPager)view.findViewById(R.id.pager);
@@ -160,6 +122,39 @@ public class HomeFragment extends Fragment{
         LinearLayoutManager layoutManager = new LinearLayoutManager(context,LinearLayoutManager.HORIZONTAL, false);
         myList = (RecyclerView)view.findViewById(R.id.societies);
         myList.setLayoutManager(layoutManager);
+        societyArray = new ArrayList<>();
+        String societyUrl = "http://gatesapi.herokuapp.com/SocietesCard?q=societies";
+        StringRequest request = new StringRequest(Request.Method.GET, societyUrl,
+                new Response.Listener<String>() {
+                    @Override
+                    public void onResponse(String response) {
+                        try {
+                            JSONArray array = new JSONArray(response);
+                            for (int i = 0 ; i < array.length(); i++){
+                                JSONObject object = array.optJSONObject(i);
+                                String tempTitle = object.getString("sname");
+                                String tempUrl = baseImageUrl + object.getString("imgurl");
+
+                                //Log.e(TAG, "" + tempTitle + " " +tempUrl);
+                                societyArray.add(new ImageItem(tempUrl, tempTitle));
+                            }
+                            myList.setAdapter(new SocietesAdapter(context, societyArray));
+
+                        } catch (JSONException e) {
+                            //Log.v(TAG, ""+ e);
+                            Snackbar snackbar = Snackbar.make(linl, "Failed To Fetch Data", Snackbar.LENGTH_LONG);
+                            snackbar.show();
+                        }
+                    }
+                }, new Response.ErrorListener() {
+            @Override
+            public void onErrorResponse(VolleyError error) {
+                Snackbar snackbar = Snackbar.make(linl, "Failed To Fetch Data", Snackbar.LENGTH_LONG);
+                snackbar.show();
+                //Toast.makeText(context, "E"+ error, Toast.LENGTH_LONG).show();
+            }
+        });
+        VolleySingleton.getInstance(getActivity().getApplicationContext()).getRequestQueue().add(request);
         return view;
     }
 

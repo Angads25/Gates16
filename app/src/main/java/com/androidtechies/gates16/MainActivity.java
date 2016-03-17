@@ -1,20 +1,22 @@
 package com.androidtechies.gates16;
 
+import android.content.DialogInterface;
 import android.content.Intent;
 import android.graphics.Color;
 import android.net.Uri;
 import android.support.design.widget.NavigationView;
 import android.support.v4.widget.DrawerLayout;
 import android.support.v7.app.ActionBarDrawerToggle;
+import android.support.v7.app.AlertDialog;
 import android.support.v7.app.AppCompatActivity;
 import android.os.Bundle;
+import android.support.v7.app.AppCompatDialog;
 import android.support.v7.widget.Toolbar;
 import android.view.MenuItem;
 import android.view.View;
 
 import com.androidtechies.fragments.EventsFragment;
 import com.androidtechies.fragments.HomeFragment;
-import com.androidtechies.fragments.RegistrationFragment;
 import com.androidtechies.fragments.SponsorFragment;
 
 import butterknife.Bind;
@@ -37,6 +39,7 @@ public class MainActivity extends AppCompatActivity {
             @Override
             public void onDrawerOpened(View drawerView) {
                 super.onDrawerOpened(drawerView);
+                toolbar.setTitle("Gates 2K16");
             }
 
             @Override
@@ -56,23 +59,54 @@ public class MainActivity extends AppCompatActivity {
                 item.setChecked(true);
                 switch (item.getItemId()){
                     case R.id.home:     getSupportFragmentManager().beginTransaction().replace(R.id.container, new HomeFragment()).commit();
+                                        toolbar.setTitle("Home");
                                         break;
 
                     case R.id.events:   getSupportFragmentManager().beginTransaction().replace(R.id.container, new EventsFragment()).commit();
+                                        toolbar.setTitle("Events");
                                         break;
 
                     case R.id.sponsers: getSupportFragmentManager().beginTransaction().replace(R.id.container, new SponsorFragment()).commit();
                                         break;
 
-                    case R.id.register: //getSupportFragmentManager().beginTransaction().replace(R.id.container, new RegistrationFragment()).commit();
-                                        Intent browserIntent = new Intent(Intent.ACTION_VIEW, Uri.parse("http://www.gatesgtbit.com/form.html"));
+                    case R.id.register: Intent browserIntent = new Intent(Intent.ACTION_VIEW, Uri.parse("http://www.gatesgtbit.com/form.html"));
                                         startActivity(browserIntent);
                                         break;
+
+                    case R.id.sub_header:   startActivity(getOpenGmailIntent());
+                                            break;
                 }
                 Drawer.closeDrawers();
                 return true;
             }
         });
+    }
+
+    public static Intent getOpenGmailIntent() {
+        Intent send = new Intent(Intent.ACTION_SENDTO);
+        String uriText = "mailto:" + Uri.encode("contact@gatesgtbit.com") +
+                "?subject=" + Uri.encode("Feedback") +
+                "&body=" + Uri.encode("");
+        Uri uri = Uri.parse(uriText);
+
+        send.setData(uri);
+        return Intent.createChooser(send, "Send mail");
+    }
+
+    @Override
+    public void onBackPressed() {
+        AlertDialog.Builder builder=new AlertDialog.Builder(this);
+        builder.setTitle("Exit");
+        builder.setMessage("Are you sure you want to Exit?");
+        builder.setPositiveButton("Yes", new DialogInterface.OnClickListener() {
+            @Override
+            public void onClick(DialogInterface dialog, int which) {
+                finish();
+            }
+        });
+        builder.setNegativeButton("No", null);
+        AppCompatDialog dialog=builder.create();
+        dialog.show();
     }
 }
 

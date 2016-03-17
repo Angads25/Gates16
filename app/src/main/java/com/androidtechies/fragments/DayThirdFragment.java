@@ -1,20 +1,21 @@
 package com.androidtechies.fragments;
 
 import android.app.Activity;
-import android.app.ProgressDialog;
 import android.content.Context;
 import android.content.Intent;
 import android.os.Bundle;
 import android.support.annotation.Nullable;
+import android.support.design.widget.Snackbar;
 import android.support.v4.app.Fragment;
 import android.support.v4.widget.SwipeRefreshLayout;
-import android.util.Log;
+//import android.util.Log;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
 import android.widget.AdapterView;
+import android.widget.LinearLayout;
 import android.widget.ListView;
-import android.widget.Toast;
+import android.widget.ProgressBar;
 
 import com.android.volley.Request;
 import com.android.volley.Response;
@@ -42,9 +43,9 @@ public class DayThirdFragment extends Fragment implements SwipeRefreshLayout.OnR
     private String eventDayThreeUrl = "https://gatesapi.herokuapp.com/DayEvents?day=3";
     private ArrayList<EventItem> eventDayThreeArray = null;
     private static String TAG = "DayThirdFragment";
-    private String tempEventImage;
     private ListView listView;
-    private ProgressDialog dialog;
+    private LinearLayout lin;
+    private ProgressBar progressBar;
 
     @Override
     public void onCreate(@Nullable Bundle savedInstanceState) {
@@ -56,8 +57,11 @@ public class DayThirdFragment extends Fragment implements SwipeRefreshLayout.OnR
     public View onCreateView(LayoutInflater inflater, ViewGroup container, Bundle savedInstanceState) {
         View view =  inflater.inflate(R.layout.fragment_day, container, false);
         mSwipeRefreshLayout = (SwipeRefreshLayout) view.findViewById(R.id.swipe_refresh_day);
+        progressBar=(ProgressBar)view.findViewById(R.id.progressBar);
         mSwipeRefreshLayout.setOnRefreshListener(this);
         listView = (ListView) view.findViewById(R.id.list);
+        lin=(LinearLayout)view.findViewById(R.id.ll);
+        progressBar.setVisibility(View.VISIBLE);
         listView.setOnItemClickListener(new AdapterView.OnItemClickListener() {
             @Override
             public void onItemClick(AdapterView<?> parent, View view, int position, long id) {
@@ -73,7 +77,7 @@ public class DayThirdFragment extends Fragment implements SwipeRefreshLayout.OnR
                 new Response.Listener<String>() {
                     @Override
                     public void onResponse(String response) {
-                        Log.e(TAG, response);
+                        //Log.e(TAG, response);
                         try {
                             JSONArray array = new JSONArray(response);
                             for(int i=0;i<array.length();i++) {
@@ -89,13 +93,26 @@ public class DayThirdFragment extends Fragment implements SwipeRefreshLayout.OnR
                             listView.setAdapter(new ListAdapter(context, eventDayThreeArray));
                         } catch (JSONException e) {
                             e.printStackTrace();
+                            Snackbar snackbar = Snackbar.make(lin, "Failed To Fetch Data", Snackbar.LENGTH_LONG);
+                            snackbar.show();
+                        }
+                        finally
+                        {   progressBar.setVisibility(View.GONE);
                         }
 
                     }
                 }, new Response.ErrorListener() {
             @Override
             public void onErrorResponse(VolleyError error) {
-                Toast.makeText(context, "E"+ error, Toast.LENGTH_LONG).show();
+                //Toast.makeText(context, "E"+ error, Toast.LENGTH_LONG).show();
+                try {
+                    Snackbar snackbar = Snackbar.make(lin, "Failed To Fetch Data", Snackbar.LENGTH_LONG);
+                    snackbar.show();
+                }
+                catch(Exception e)
+                {   e.printStackTrace();
+                }
+                progressBar.setVisibility(View.GONE);
             }
         });
         VolleySingleton.getInstance(context.getApplicationContext()).getRequestQueue().add(request);
@@ -108,18 +125,10 @@ public class DayThirdFragment extends Fragment implements SwipeRefreshLayout.OnR
             @Override
             public void run() {
                 eventDayThreeArray = new ArrayList<>();
-                ((Activity)context).runOnUiThread(new Runnable() {
-                    @Override
-                    public void run() {
-                        dialog = new ProgressDialog(context);
-                        dialog.setMessage("Loading...");
-                        dialog.show();
-                    }
-                });
                 StringRequest request = new StringRequest(Request.Method.GET, eventDayThreeUrl, new Response.Listener<String>() {
                     @Override
                     public void onResponse(String response) {
-                        Log.e(TAG, response);
+                        //Log.e(TAG, response);
                         try {
                             JSONArray array = new JSONArray(response);
                             for (int i = 0 ; i < array.length(); i++){
@@ -138,25 +147,39 @@ public class DayThirdFragment extends Fragment implements SwipeRefreshLayout.OnR
                                 }
                             });
                         } catch (JSONException e) {
-                            Log.v(TAG, ""+ e);
+                            //Log.v(TAG, ""+ e);
+                            Snackbar snackbar = Snackbar.make(lin, "Failed To Fetch Data", Snackbar.LENGTH_LONG);
+                            snackbar.show();
+                        }
+                        finally {
+                            ((Activity)context).runOnUiThread(new Runnable() {
+                                @Override
+                                public void run() {
+                                    mSwipeRefreshLayout.setRefreshing(false);
+                                }
+                            });
                         }
                     }
                 }, new Response.ErrorListener() {
                     @Override
                     public void onErrorResponse(VolleyError error) {
-                        Toast.makeText(context, "E"+ error, Toast.LENGTH_LONG).show();
+                        //Toast.makeText(getActivity(), "E"+ error, Toast.LENGTH_LONG).show();
+                        ((Activity)context).runOnUiThread(new Runnable() {
+                            @Override
+                            public void run() {
+                                mSwipeRefreshLayout.setRefreshing(false);
+                                try {
+                                    Snackbar snackbar = Snackbar.make(lin, "Failed To Fetch Data", Snackbar.LENGTH_LONG);
+                                    snackbar.show();
+                                }
+                                catch(Exception e)
+                                {   e.printStackTrace();
+                                }
+                            }
+                        });
                     }
                 });
                 VolleySingleton.getInstance(context.getApplicationContext()).getRequestQueue().add(request);
-                ((Activity)context).runOnUiThread(new Runnable() {
-                    @Override
-                    public void run() {
-                        mSwipeRefreshLayout.setRefreshing(false);
-                        if(dialog.isShowing())
-                        {   dialog.dismiss();
-                        }
-                    }
-                });
             }
         });
         T1.start();

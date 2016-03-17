@@ -5,23 +5,11 @@
     android:layout_height="match_parent"
     android:background="@color/colorPrimary">
 
-    <TextView
-        android:layout_width="wrap_content"
-        android:layout_height="wrap_content"
-        android:text="Gates 2016"
-        android:id="@+id/textView"
-        android:textSize="50sp"
-        android:textColor="@color/colorAccent"
-        android:layout_gravity="center"
-        android:layout_centerHorizontal="true"
-        android:textStyle="bold"
-        android:layout_alignBottom="@+id/imageView" />
-
     <ImageView
-        android:layout_width="wrap_content"
-        android:layout_height="wrap_content"
+        android:layout_width="match_parent"
+        android:layout_height="match_parent"
         android:id="@+id/imageView"
-        android:src="@drawable/splash"
+        android:src="@drawable/screen"
         android:scaleType="centerInside"
         android:layout_alignParentTop="true"
         android:layout_alignParentLeft="true"
