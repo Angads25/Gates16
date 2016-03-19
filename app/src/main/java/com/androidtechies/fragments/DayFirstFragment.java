@@ -77,7 +77,7 @@ public class DayFirstFragment extends Fragment implements SwipeRefreshLayout.OnR
                     listView.setAdapter(new ListAdapter(context, eventDayOneArray));
                 } catch (JSONException e) {
                     //Log.v(TAG, "" + e);
-                    Snackbar snackbar = Snackbar.make(lin, "Failed To Fetch Data", Snackbar.LENGTH_LONG);
+                    Snackbar snackbar = Snackbar.make(lin, "Failed To Fetch Data. Pull Down to Retry", Snackbar.LENGTH_LONG);
                     snackbar.show();
 
                 }
@@ -90,7 +90,7 @@ public class DayFirstFragment extends Fragment implements SwipeRefreshLayout.OnR
             public void onErrorResponse(VolleyError error) {
                 //Toast.makeText(context, "E"+ error, Toast.LENGTH_LONG).show();
                 try {
-                    Snackbar snackbar = Snackbar.make(lin, "Failed To Fetch Data", Snackbar.LENGTH_LONG);
+                    Snackbar snackbar = Snackbar.make(lin, "Failed To Fetch Data. Pull Down to Retry", Snackbar.LENGTH_LONG);
                     snackbar.show();
                 }
                 catch(Exception e)
@@ -142,7 +142,7 @@ public class DayFirstFragment extends Fragment implements SwipeRefreshLayout.OnR
                             });
                         } catch (JSONException e) {
                             //Log.e(TAG, "" + e);
-                            Snackbar snackbar = Snackbar.make(lin, "Failed To Fetch Data", Snackbar.LENGTH_LONG);
+                            Snackbar snackbar = Snackbar.make(lin, "Failed To Fetch Data. Pull Down to Retry", Snackbar.LENGTH_LONG);
                             snackbar.show();
                         }
                         finally {
@@ -163,7 +163,7 @@ public class DayFirstFragment extends Fragment implements SwipeRefreshLayout.OnR
                             public void run() {
                                 mSwipeRefreshLayout.setRefreshing(false);
                                 try {
-                                    Snackbar snackbar = Snackbar.make(lin, "Failed To Fetch Data", Snackbar.LENGTH_LONG);
+                                    Snackbar snackbar = Snackbar.make(lin, "Failed To Fetch Data. Pull Down to Retry", Snackbar.LENGTH_LONG);
                                     snackbar.show();
                                 }
                                 catch(Exception e)

@@ -134,7 +134,6 @@ public class HomeFragment extends Fragment{
                                 JSONObject object = array.optJSONObject(i);
                                 String tempTitle = object.getString("sname");
                                 String tempUrl = baseImageUrl + object.getString("imgurl");
-
                                 //Log.e(TAG, "" + tempTitle + " " +tempUrl);
                                 societyArray.add(new ImageItem(tempUrl, tempTitle));
                             }

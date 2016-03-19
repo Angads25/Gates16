@@ -10,6 +10,7 @@ import android.support.v4.widget.SwipeRefreshLayout;
 import android.support.v7.app.AppCompatActivity;
 import android.support.v7.widget.Toolbar;
 //import android.util.Log;
+import android.util.Log;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
@@ -41,7 +42,7 @@ public class SponsorFragment extends Fragment implements SwipeRefreshLayout.OnRe
     private  ArrayList<ImageItem> arr;
     private GridView gridView;
     private Toolbar toolbar;
-    //private static String TAG="SponserFragment";
+    private static String TAG="SponserFragment";
     private SwipeRefreshLayout swipeRefreshLayout;
     private RelativeLayout rellayout;
     private ProgressBar progressBar;
@@ -63,7 +64,7 @@ public class SponsorFragment extends Fragment implements SwipeRefreshLayout.OnRe
                 new Response.Listener<String>() {
                     @Override
                     public void onResponse(String response) {
-                        //Log.e(TAG,response);
+                        //Log.e(TAG, response);
                         try {
                             JSONArray array = new JSONArray(response);
                             for (int i = 0 ; i < array.length(); i++){
@@ -81,7 +82,7 @@ public class SponsorFragment extends Fragment implements SwipeRefreshLayout.OnRe
                             gridView.setAdapter(new GridViewAdapter(context, arr));
                         } catch (JSONException e) {
                             //Log.e(TAG, ""+ e);
-                            Snackbar snackbar = Snackbar.make(rellayout, "Failed To Fetch Data", Snackbar.LENGTH_LONG);
+                            Snackbar snackbar = Snackbar.make(rellayout, "Failed To Fetch Data. Pull Down to Retry", Snackbar.LENGTH_LONG);
                             snackbar.show();
                         }
                         finally
@@ -93,7 +94,7 @@ public class SponsorFragment extends Fragment implements SwipeRefreshLayout.OnRe
             public void onErrorResponse(VolleyError error) {
                 //Toast.makeText(context, "E"+ error, Toast.LENGTH_LONG).show();
                 progressBar.setVisibility(View.GONE);
-                Snackbar snackbar = Snackbar.make(rellayout, "Failed To Fetch Data", Snackbar.LENGTH_LONG);
+                Snackbar snackbar = Snackbar.make(rellayout, "Failed To Fetch Data. Pull Down to Retry", Snackbar.LENGTH_LONG);
                 snackbar.show();
             }
         });
@@ -136,7 +137,7 @@ public class SponsorFragment extends Fragment implements SwipeRefreshLayout.OnRe
                                 gridView.setAdapter(new GridViewAdapter(context, arr));
                             } catch (JSONException e) {
                                 //Log.e(TAG, ""+ e);
-                                Snackbar snackbar = Snackbar.make(rellayout, "Failed To Fetch Data", Snackbar.LENGTH_LONG);
+                                Snackbar snackbar = Snackbar.make(rellayout, "Failed To Fetch Data. Pull Down to Retry", Snackbar.LENGTH_LONG);
                                 snackbar.show();
                             }
                             finally {
@@ -152,7 +153,7 @@ public class SponsorFragment extends Fragment implements SwipeRefreshLayout.OnRe
                     @Override
                     public void onErrorResponse(VolleyError error) {
                         //Toast.makeText(context, "E"+ error, Toast.LENGTH_LONG).show();
-                        Snackbar snackbar = Snackbar.make(rellayout, "Failed To Fetch Data", Snackbar.LENGTH_LONG);
+                        Snackbar snackbar = Snackbar.make(rellayout, "Failed To Fetch Data. Pull Down to Retry", Snackbar.LENGTH_LONG);
                         snackbar.show();
                         ((Activity)context).runOnUiThread(new Runnable() {
                             @Override

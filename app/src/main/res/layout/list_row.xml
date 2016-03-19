@@ -9,7 +9,8 @@
         android:layout_width="match_parent"
         android:layout_height="?attr/listPreferredItemHeightLarge"
         app:cardElevation="2dp"
-        android:layout_margin="2dp" >
+        android:layout_margin="2dp"
+        android:background="#F3E5F5">
         <!-- 180dp-->
 
         <!--<ImageView-->

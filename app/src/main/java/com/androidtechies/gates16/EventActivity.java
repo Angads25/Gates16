@@ -3,6 +3,7 @@ package com.androidtechies.gates16;
 import android.annotation.SuppressLint;
 import android.content.Context;
 import android.content.Intent;
+import android.content.res.Configuration;
 import android.graphics.Color;
 import android.net.Uri;
 import android.os.Build;
@@ -37,7 +38,7 @@ import java.util.TimeZone;
 public class EventActivity extends AppCompatActivity
 {   private Context context;
     private ImageView titleImage;
-    private static String TAG = "EventActivity";
+    //private static String TAG = "EventActivity";
     private CollapsingToolbarLayout collapsingToolbar;
 
     @SuppressWarnings("deprecation")
@@ -60,7 +61,7 @@ public class EventActivity extends AppCompatActivity
         toolbar.setTitleTextColor(Color.parseColor("#FFFFFF"));
         Bundle bundle = getIntent().getExtras();
         int id = bundle.getInt("event_id");
-        Log.e(TAG, id +"");
+        //Log.e(TAG, id +"");
         collapsingToolbar=(CollapsingToolbarLayout) findViewById(R.id.collapse_toolbar);
         collapsingToolbar.setCollapsedTitleTextColor(Color.parseColor("#FFFFFF"));
         if (Build.VERSION.SDK_INT >= Build.VERSION_CODES.M) {
@@ -86,7 +87,7 @@ public class EventActivity extends AppCompatActivity
                 new Response.Listener<String>() {
                     @Override
                     public void onResponse(String response) {
-                        Log.e(TAG, response);
+                        //Log.e(TAG, response);
                         try {
                             JSONArray array = new JSONArray(response);
                             for (int i = 0 ; i < array.length(); i++){
@@ -203,13 +204,13 @@ public class EventActivity extends AppCompatActivity
                             }
                         }
                         catch (JSONException e) {
-                            Log.e(TAG, "" + e);
+                            //Log.e(TAG, "" + e);
                         }
                     }
                 }, new Response.ErrorListener() {
             @Override
             public void onErrorResponse(VolleyError error) {
-                Toast.makeText(getApplicationContext(), "E" + error, Toast.LENGTH_LONG).show();
+                //Toast.makeText(getApplicationContext(), "E" + error, Toast.LENGTH_LONG).show();
             }
         });
         VolleySingleton.getInstance(getApplicationContext()).getRequestQueue().add(request);
@@ -224,6 +225,11 @@ public class EventActivity extends AppCompatActivity
 
         send.setData(uri);
         return Intent.createChooser(send, "Send mail");
+    }
+
+    @Override
+    public void onConfigurationChanged(Configuration newConfig) {
+        super.onConfigurationChanged(newConfig);
     }
 }
 

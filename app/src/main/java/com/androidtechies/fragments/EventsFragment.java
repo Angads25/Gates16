@@ -30,6 +30,8 @@ public class EventsFragment extends Fragment
         fragmentManager = getActivity().getSupportFragmentManager();
         setupViewPager(viewPager);
         final TabLayout tabLayout = (TabLayout) view.findViewById(R.id.tabanim_tabs);
+        tabLayout.setTabMode(TabLayout.MODE_FIXED);
+        tabLayout.setTabGravity(TabLayout.GRAVITY_FILL);
         tabLayout.setupWithViewPager(viewPager);
         tabLayout.setOnTabSelectedListener(new TabLayout.OnTabSelectedListener() {
             @Override
